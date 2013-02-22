@@ -48,7 +48,10 @@
         },
         yourOtherFunction: function () {
             // some logic
-        }
+        },
+		yourPublicFunction: function () {
+            // some logic
+        }	
     };
 
     // A really lightweight plugin wrapper around the constructor,
@@ -57,6 +60,10 @@
         return this.each(function () {
             if (!$.data(this, "plugin_" + pluginName)) {
                 $.data(this, "plugin_" + pluginName, new Plugin(this, options));
+            }
+			// Support for public functions $('#element').defaultPluginName('yourPublicFunction')
+			else if ($.isFunction(Plugin.prototype[options])) {
+                $.data(this, 'plugin_' + pluginName)[options]();
             }
         });
     };
